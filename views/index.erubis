@@ -3,9 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>YUI Tweets</title>
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.2.0pr1/build/cssreset/reset-min.css&amp;3.2.0pr1/build/cssgrids/grids-min.css">
-  <!-- <link rel="stylesheet" type="text/css" href="/yui/cssreset/reset-min.css">
-  <link rel="stylesheet" type="text/css" href="/yui/cssgrids/grids-min.css"> -->
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.2.0pr2/build/cssreset/reset-min.css&amp;3.2.0pr2/build/cssgrids/grids-min.css">
   <link rel="stylesheet" type="text/css" href="/css/yuitweets.css">
 </head>
 <body>
@@ -27,8 +25,7 @@
   </section>
 </div>
 
-<script src="http://yui.yahooapis.com/combo?3.2.0pr1/build/yui/yui-min.js&amp;3.2.0pr1/build/loader/loader-min.js"></script>
-<!-- <script src="/yui/yui/yui-min.js"></script> -->
+<script src="http://yui.yahooapis.com/combo?3.2.0pr2/build/yui/yui-min.js&amp;3.2.0pr2/build/loader/loader-min.js"></script>
 <script src="/js/node-sorted.js"></script>
 <script src="/js/yuitweets.js"></script>
 
