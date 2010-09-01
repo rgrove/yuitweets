@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+
+# This is currently just a stupid executable that grabs the latest unseen
+# Twitter search results for [yui] and shoves them into the YUITweets database.
+
+require 'open-uri'
+require 'yuitweets'
+
+module YUITweets::CLI
+  TWITTER_URL = 'http://search.twitter.com/search.json?q=yui%20OR%20yuilibrary%20OR%20yui3&lang=en&rpp=100&result_type=recent'
+
+  YUITweets.init
+
+  # Fetch new tweets.
+  open("#{TWITTER_URL}&since_id=#{YUITweets::Tweet.last_id}") do |search|
+    count  = 0
+    search = Yajl::Parser.parse(search, :symbolize_keys => true)
+
+    search[:results].each do |tweet|
+      unless YUITweets.db[:tweets].filter(:id => tweet[:id]).count > 0
+        # Discard fields we aren't interested in.
+        tweet.delete(:metadata)
+
+        YUITweets.db[:tweets].insert(
+          :id         => tweet[:id],
+          :tweet      => Yajl::Encoder.encode(tweet),
+          :created_at => Time.parse(tweet[:created_at])
+        )
+
+        count += 1
+      end
+    end
+
+    puts "Added #{count} new tweet(s)"
+  end
+
+  # Attempt to classify unknown tweets.
+  count = 0
+
+  YUITweets::Tweet.recent(:type => nil, :limit => 100).all.each do |tweet|
+    if type = YUITweets.bayes.classify(tweet.specimen)
+      tweet.update(:type => type)
+      count += 1
+    end
+  end
+
+  puts "Classified #{count} tweet(s)"
+end

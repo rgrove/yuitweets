@@ -1,0 +1,116 @@
+html {
+  background: #fff;
+  color: #333;
+  font: normal normal normal 13px/1.2 'Lucida Grande', 'Lucida Sans Unicode', sans-serif;
+}
+
+body {
+  margin: auto;
+  padding: 1em;
+}
+
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Trebuchet MS';
+}
+
+strong { font-weight: bold; }
+
+/* -- Columns --------------------------------------------------------------- */
+.column > h1 {
+  background: #f5f5f5;
+  border: 1px solid #dfdfdf;
+  font-size: 1.4em;
+  font-weight: bold;
+  margin: 0 4px;
+  padding: 3px;
+  text-align: center;
+}
+
+/* -- Tweets ---------------------------------------------------------------- */
+.tweets { margin: 4px; }
+
+.tweet {
+  border: 1px solid transparent;
+  margin-bottom: 3px;
+  padding: 4px 29px 4px 4px;
+  position: relative;
+}
+
+.tweet.new {
+  background: #F8F0FF;
+  border-color: #E3C5FA;
+}
+
+.tweet.auto {
+  background: #FFF3E6;
+  border-color: #FFD4A3;
+}
+
+.tweet:after {
+  clear: both;
+  content: '.';
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+.tweet:hover {
+  background: #E4F0FC;
+  border-color: #9FB8D0;
+}
+
+.tweet .bd,
+.tweet > footer { margin-left: 57px; }
+
+.tweet > footer {
+  color: #999;
+  font-size: 11px;
+}
+
+.tweet > footer a { color: inherit; }
+
+.tweet > header { float: left; }
+
+.tweet .photo {
+  height: 48px;
+  width: 48px;
+}
+
+.tweet .user { margin-right: 2px; }
+
+/* -- Vote buttons ---------------------------------------------------------- */
+.vote {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  visibility: hidden;
+  z-index: 1;
+}
+
+.tweet:hover .vote { visibility: visible; }
+
+.vote > button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: block;
+  opacity: 0.6;
+  padding: 0;
+}
+
+.vote > button:hover { opacity: 1.0; }
+
+.vote > button,
+.vote > button > img {
+  height: 24px;
+  width: 24px;
+}
+
+#yui .vote-up,
+#other .vote-down { display: none; }
+
+#yui .auto .vote-up,
+#other .auto .vote-down { display: block; }

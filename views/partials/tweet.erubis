@@ -1,0 +1,33 @@
+<article id="tweet-<%= tweet.id %>" class="tweet" data-tweet-id="<%= tweet.id %>">
+  <header>
+    <a href="<%= url_user(tweet.from_user) %>" class="photo-link">
+      <img src="<%= tweet.profile_image_url %>" alt="<%= tweet.from_user %>" class="photo">
+    </a>
+  </header>
+
+  <div class="bd">
+    <strong>
+      <a href="<%= url_user(tweet.from_user) %>" class="user"><%= tweet.from_user %></a>
+    </strong>
+    <span class="tweet-text"><%= tweet.text %></span>
+  </div>
+
+  <footer>
+    <div class="vote">
+      <button class="vote-up" data-tweet-id="<%= tweet.id %>"><img src="img/thumbup.png" alt="Vote up"></button>
+      <button class="vote-down" data-tweet-id="<%= tweet.id %>"><img src="img/thumbdown.png" alt="Vote down"></button>
+    </div>
+
+    <time datetime="<%= tweet.created_at %>" pubdate class="created-at">
+      <a href="<%= url_tweet(tweet) %>" rel="bookmark" class="permalink">
+        <%= tweet.created_at %>
+      </a>
+    </time>
+
+    <div>
+      <% tweet.scores.each do |type, score| %>
+        <strong><%== type %>:</strong> <%== score %><br>
+      <% end %>
+    </div>
+  </footer>
+</article>
