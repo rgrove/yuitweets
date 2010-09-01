@@ -106,7 +106,8 @@ module YUITweets; class Server < Sinatra::Base
     end
 
     def render_tweet(tweet)
-      erubis(:'partials/tweet', :locals => {:tweet => tweet})
+      show_scores = !params[:show_scores].nil?
+      erubis(:'partials/tweet', :locals => {:tweet => tweet, :show_scores => show_scores})
     end
 
     def url_tweet(tweet)

@@ -24,10 +24,12 @@
       </a>
     </time>
 
-    <div>
-      <% tweet.scores.each do |type, score| %>
-        <strong><%== type %>:</strong> <%== score %><br>
-      <% end %>
-    </div>
+    <% if show_scores %>
+      <div>
+        <% tweet.scores.each do |type, score| %>
+          <strong><%== type %>:</strong> <%== score %><br>
+        <% end %>
+      </div>
+    <% end %>
   </footer>
 </article>
