@@ -15,6 +15,7 @@ gemspec = Gem::Specification.new do |s|
 
   # Runtime dependencies.
   s.add_dependency('erubis',        '~> 2.6.6')
+  s.add_dependency('htmlentities',  '~> 4.2.1')
   s.add_dependency('sequel',        '~> 3.14')
   s.add_dependency('sinatra',       '~> 1.0.0')
   s.add_dependency('sqlite3-ruby',  '~> 1.3.1')
