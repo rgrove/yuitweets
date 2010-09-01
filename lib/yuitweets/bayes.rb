@@ -8,12 +8,12 @@ module YUITweets; class Bayes
   # much higher than the score for any other type before that score will be
   # considered a confident classification. This requirement is in addition to
   # the CONFIDENCE_MIN requirement.
-  CONFIDENCE_DIFF = 0.4
+  CONFIDENCE_DIFF = 0.3
 
   # Confidence minimum. A score for a particular type must be at least this high
   # before it will be considered a confident classification. This requirement is
   # in addition to the CONFIDENCE_DIFF requirement.
-  CONFIDENCE_MIN = 0.5
+  CONFIDENCE_MIN = 0.4
 
   # Regex that matches a complete word string that should be excluded from the
   # corpus.
