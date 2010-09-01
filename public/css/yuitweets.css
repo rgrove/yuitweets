@@ -35,6 +35,7 @@ strong { font-weight: bold; }
 .tweet {
   border: 1px solid transparent;
   margin-bottom: 3px;
+  overflow: hidden;
   padding: 4px 29px 4px 4px;
   position: relative;
 }
