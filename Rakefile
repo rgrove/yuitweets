@@ -14,6 +14,7 @@ gemspec = Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.1'
 
   # Runtime dependencies.
+  s.add_dependency('builder',       '~> 2.1.2')
   s.add_dependency('erubis',        '~> 2.6.6')
   s.add_dependency('htmlentities',  '~> 4.2.1')
   s.add_dependency('sequel',        '~> 3.14')
@@ -25,6 +26,8 @@ gemspec = Gem::Specification.new do |s|
   # Development dependencies.
   s.add_development_dependency('rake', '~> 0.8.7')
 
+  # Gem just installs the executable and the library files for now. Pull the
+  # rest from git.
   s.files = FileList[
     # 'config.ru',
     'bin/yuitweets',

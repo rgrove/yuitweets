@@ -5,22 +5,34 @@
   <title>YUI Tweets</title>
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.2.0pr2/build/cssreset/reset-min.css&amp;3.2.0pr2/build/cssgrids/grids-min.css">
   <link rel="stylesheet" type="text/css" href="/css/yuitweets.css">
+  <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=yui" title="YUI library tweets">
+  <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=unknown" title="Unknown tweets">
+  <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=other" title="Non-YUI tweets">
 </head>
 <body>
 
 <div id="bd" class="yui3-g">
   <section class="column yui3-u-1-3">
-    <h1>YUI Library</h1>
+    <h1>
+      YUI Library
+      <a href="/recent.rss?type=yui" rel="alternate" type="application/rss+xml"><img src="img/feed.png" alt="RSS feed" class="feed"></a>
+    </h1>
     <div id="yui" class="tweets"></div>
   </section>
 
   <section class="column yui3-u-1-3">
-    <h1>Unknown</h1>
+    <h1>
+      Unknown
+      <a href="/recent.rss?type=unknown" rel="alternate" type="application/rss+xml"><img src="img/feed.png" alt="RSS feed" class="feed"></a>
+    </h1>
     <div id="unknown" class="tweets"></div>
   </section>
 
   <section class="column yui3-u-1-3">
-    <h1>Not YUI Library</h1>
+    <h1>
+      Not YUI Library
+      <a href="/recent.rss?type=other" rel="alternate" type="application/rss+xml"><img src="img/feed.png" alt="RSS feed" class="feed"></a>
+    </h1>
     <div id="other" class="tweets"></div>
   </section>
 </div>

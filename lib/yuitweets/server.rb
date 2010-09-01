@@ -1,4 +1,6 @@
+require 'builder'
 require 'erubis'
+require 'htmlentities'
 require 'sinatra/base'
 
 require 'yuitweets'
@@ -23,44 +25,56 @@ module YUITweets; class Server < Sinatra::Base
   get '/recent.json' do
     content_type('application/json', :charset => 'utf-8')
 
-    limit    = (params[:limit] || 20).to_i
-    since_id = (params[:since_id] || 0).to_i
-    type     = params[:type]
-
-    if type.nil?
-      results = []
-
-      ['yui', nil, 'other'].each do |type|
-        results += Tweet.recent(
-          :limit    => limit,
-          :since_id => since_id,
-          :type     => type
-        ).all
-      end
-    else
-      results = Tweet.recent(
-        :limit    => limit,
-        :since_id => since_id,
-        :type     => type == 'unknown' ? nil : type
-      ).all
-    end
+    results = recent_tweets
 
     if results.empty?
       json_success({
-        :limit    => limit,
-        :since_id => since_id
+        :limit    => @limit,
+        :since_id => @since_id
       })
     else
-      results.sort_by! {|tweet| tweet.id }
-      results.reverse!
-
       json_success({
         :add      => results.map {|t| t.to_hash(:html => render_tweet(t)) },
-        :limit    => limit,
+        :limit    => @limit,
         :max_id   => results.first && results.first.id || 0,
-        :since_id => since_id
+        :since_id => @since_id
       })
     end
+  end
+
+  get '/recent.rss' do
+    content_type('application/rss+xml', :charset => 'utf-8')
+
+    results  = recent_tweets
+    entities = HTMLEntities.new
+
+    x = Builder::XmlMarkup.new(:indent => 2)
+    x.instruct!
+
+    x.rss(:version     => '2.0',
+          'xmlns:atom' => 'http://www.w3.org/2005/Atom',
+          'xmlns:dc'   => 'http://purl.org/dc/elements/1.1/') do
+
+      x.channel do
+        x.title 'YUI Tweets'
+        x.link  'http://yuitweets.pieisgood.org/'
+        x.ttl   5
+
+        results.each do |tweet|
+          tweet_url = url_tweet(tweet)
+
+          x.item do
+            x.title   entities.decode(tweet.text)
+            x.link    tweet_url
+            x.dc      :creator, tweet.from_user
+            x.guid    tweet_url, :isPermaLink => 'true'
+            x.pubDate tweet.created_at.rfc2822
+          end
+        end
+      end
+    end
+
+    x.target!
   end
 
   post '/vote.json' do
@@ -103,6 +117,34 @@ module YUITweets; class Server < Sinatra::Base
       body[:data] = data unless data.nil?
 
       Yajl::Encoder.encode(body)
+    end
+
+    def recent_tweets
+      @limit    = (params[:limit] || 20).to_i
+      @since_id = (params[:since_id] || 0).to_i
+      @type     = params[:type]
+
+      if @type.nil?
+        results = []
+
+        ['yui', nil, 'other'].each do |type|
+          results += Tweet.recent(
+            :limit    => @limit,
+            :since_id => @since_id,
+            :type     => type
+          ).all
+        end
+      else
+        results = Tweet.recent(
+          :limit    => @limit,
+          :since_id => @since_id,
+          :type     => @type == 'unknown' ? nil : @type
+        ).all
+      end
+
+      results.sort_by! {|tweet| tweet.id }
+      results.reverse!
+      results
     end
 
     def render_tweet(tweet)
