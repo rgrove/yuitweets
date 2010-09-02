@@ -17,14 +17,15 @@ gemspec = Gem::Specification.new do |s|
   s.add_dependency('builder',       '~> 2.1.2')
   s.add_dependency('erubis',        '~> 2.6.6')
   s.add_dependency('htmlentities',  '~> 4.2.1')
-  s.add_dependency('sequel',        '~> 3.14')
+  s.add_dependency('mysql2',        '~> 0.2.3')
+  s.add_dependency('sequel',        '~> 3.15')
   s.add_dependency('sinatra',       '~> 1.0.0')
-  s.add_dependency('sqlite3-ruby',  '~> 1.3.1')
   s.add_dependency('unicode_utils', '~> 1.0.0')
   s.add_dependency('yajl-ruby',     '~> 0.7.7')
 
   # Development dependencies.
-  s.add_development_dependency('rake', '~> 0.8.7')
+  s.add_development_dependency('rake',         '~> 0.8.7')
+  s.add_development_dependency('sqlite3-ruby', '~> 1.3.1')
 
   # Gem just installs the executable and the library files for now. Pull the
   # rest from git.
