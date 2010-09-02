@@ -20,7 +20,7 @@
 
     <time datetime="<%= tweet.created_at %>" pubdate class="created-at">
       <a href="<%= url_tweet(tweet) %>" rel="bookmark" class="permalink">
-        <%= tweet.created_at %>
+        <%= time_diff_in_words(tweet.created_at) %> ago
       </a>
     </time>
 
