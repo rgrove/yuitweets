@@ -79,6 +79,11 @@ module YUITweets; class Web < Sinatra::Base
 
     tweet = Tweet[id.to_i] or json_error(400, "Tweet id not found: #{id.to_i}")
 
+    tweet.update(
+      :type  => type,
+      :votes => tweet.votes + 1
+    )
+
     # Don't retrain if the tweet has already been trained as this type.
     if tweet.type != type
       unless tweet.type.nil?
@@ -89,11 +94,6 @@ module YUITweets; class Web < Sinatra::Base
 
       YUITweets.bayes.train(type, tweet.specimen)
     end
-
-    tweet.update(
-      :type  => type,
-      :votes => tweet.votes + 1
-    )
 
     json_success({
       :update => [tweet.to_hash(:html => render_tweet(tweet))]
