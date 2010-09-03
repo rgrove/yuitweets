@@ -2,7 +2,7 @@ module YUITweets
   ROOT_DIR = ENV['YUITWEETS_ROOT'] || File.expand_path('.')
 end
 
-require 'yuitweets/server'
+require 'yuitweets/web'
 
 YUITweets.init
-run YUITweets::Server
+run YUITweets::Web
