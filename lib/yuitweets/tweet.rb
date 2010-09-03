@@ -40,14 +40,16 @@ module YUITweets; class Tweet < Sequel::Model
     @specimen ||= HTMLEntities.new.decode("@#{from_user} #{text}")
   end
 
-  def to_hash(merge = {})
-    {
+  def to_hash(merge = {}, include_scores = false)
+    hash = {
       :id     => id,
-      :scores => scores,
       :tweet  => tweet,
       :type   => type,
       :votes  => votes
     }.merge(merge)
+
+    hash[:scores] = scores if include_scores
+    hash
   end
 
   def tweet

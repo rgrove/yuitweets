@@ -11,7 +11,9 @@ var YArray = Y.Array,
 
     nodeOther   = Y.one('#other'),
     nodeUnknown = Y.one('#unknown'),
-    nodeYUI     = Y.one('#yui');
+    nodeYUI     = Y.one('#yui'),
+
+    showScores  = window.location.search.search(/[?&]show_scores(?:[=&]|$)/) !== -1;
 
 // -- Private Functions --------------------------------------------------------
 function addTweet(tweet, prepend) {
@@ -114,6 +116,10 @@ function requestTweets(type, sinceId) {
         data.push('since_id=' + sinceId);
     }
 
+    if (showScores) {
+        data.push('show_scores=1');
+    }
+
     if (data.length) {
         url += '?' + data.join('&');
     }
@@ -158,10 +164,17 @@ function updateTweets(tweets) {
 }
 
 function vote(id, type) {
-    Y.log('vote ' + type + ' for tweet #' + id);
+    var data = [
+        'id=' + id,
+        'type=' + encodeURIComponent(type)
+    ];
+
+    if (showScores) {
+        data.push('show_scores=1');
+    }
 
     Y.io(URL_VOTE, {
-        data: 'id=' + id + '&type=' + encodeURIComponent(type),
+        data: data.join('&'),
         method: 'POST',
         on: {
             failure : onVoteFailure,
