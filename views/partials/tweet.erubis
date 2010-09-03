@@ -9,7 +9,7 @@
     <strong>
       <a href="<%= url_user(tweet.from_user) %>" class="user"><%= tweet.from_user %></a>
     </strong>
-    <span class="tweet-text"><%= tweet.text %></span>
+    <span class="tweet-text"><%= linkify(tweet.text) %></span>
   </div>
 
   <footer>
