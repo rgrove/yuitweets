@@ -45,6 +45,11 @@ end
 Rake::GemPackageTask.new(gemspec) do |p|
 end
 
+desc 'Run a development server.'
+task :devserver do
+  sh 'ruby -Ilib `which thin` -R config.ru start'
+end
+
 desc 'Generate an updated gemspec.'
 task :gemspec do
   filename = File.join(File.dirname(__FILE__), "#{gemspec.name}.gemspec")
@@ -52,9 +57,9 @@ task :gemspec do
   puts "Created gemspec: #{filename}"
 end
 
-desc 'Run a development server.'
-task :devserver do
-  sh 'ruby -Ilib /usr/bin/thin -R config.ru start'
+desc 'Build and install the gem.'
+task :install => :gem do
+  sh "gem install pkg/yuitweets-#{YUITweets::VERSION}.gem"
 end
 
 desc 'Create or migrate the database schema.'
