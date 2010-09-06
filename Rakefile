@@ -7,7 +7,7 @@ gemspec = Gem::Specification.new do |s|
   s.version  = YUITweets::VERSION
   s.author   = 'Ryan Grove'
   s.email    = 'ryan@wonko.com'
-  # s.homepage = 'http://github.com/rgrove/yuitweets/'
+  s.homepage = 'http://github.com/rgrove/yuitweets/'
   s.platform = Gem::Platform::RUBY
 
   s.require_path          = 'lib'
@@ -25,7 +25,7 @@ gemspec = Gem::Specification.new do |s|
   s.add_dependency('yajl-ruby',     '~> 0.7.7')
 
   # Development dependencies.
-  s.add_development_dependency('rake',         '~> 0.8.7')
+  s.add_development_dependency('rake', '~> 0.8.7')
 
   # Gem just installs the executable and the library files for now. Pull the
   # rest from git.

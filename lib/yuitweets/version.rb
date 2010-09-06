@@ -1,3 +1,3 @@
 module YUITweets
-  VERSION = '2010090201'
+  VERSION = '20100906'
 end

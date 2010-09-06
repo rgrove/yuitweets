@@ -2,15 +2,16 @@
 
 Gem::Specification.new do |s|
   s.name = %q{yuitweets}
-  s.version = "2010090201"
+  s.version = "20100906"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Grove"]
-  s.date = %q{2010-09-02}
+  s.date = %q{2010-09-06}
   s.default_executable = %q{yuitweets}
   s.email = %q{ryan@wonko.com}
   s.executables = ["yuitweets"]
   s.files = ["bin/yuitweets", "lib/yuitweets/bayes.rb", "lib/yuitweets/queue.rb", "lib/yuitweets/tweet.rb", "lib/yuitweets/version.rb", "lib/yuitweets/web/helpers.rb", "lib/yuitweets/web.rb", "lib/yuitweets.rb"]
+  s.homepage = %q{http://github.com/rgrove/yuitweets/}
   s.require_paths = ["lib"]
   s.required_ruby_version = Gem::Requirement.new(">= 1.9.1")
   s.rubygems_version = %q{1.3.7}
