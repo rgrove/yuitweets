@@ -129,27 +129,28 @@ strong { font-weight: bold; }
 /* -- Vote buttons ---------------------------------------------------------- */
 .vote {
   position: absolute;
-  right: 5px;
+  right: 3px;
   top: 3px;
   visibility: hidden;
   z-index: 1;
 }
 
+.touch .vote > .button,
 .tweet:hover .vote { visibility: visible; }
 
-.vote > button {
+.vote > .button {
   border: 0;
   background: none;
   cursor: pointer;
   display: block;
+  margin-bottom: 2px;
   opacity: 0.6;
-  padding: 0;
 }
 
-.vote > button:hover { opacity: 1.0; }
+.vote > .button:hover { opacity: 1.0; }
 
-.vote > button,
-.vote > button > img {
+.vote > .button,
+.vote > .button > img {
   height: 24px;
   width: 24px;
 }

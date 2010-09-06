@@ -14,8 +14,8 @@
 
   <footer>
     <div class="vote">
-      <button class="vote-up" data-tweet-id="<%= tweet.id %>"><img src="img/thumbup.png" alt="Vote up"></button>
-      <button class="vote-down" data-tweet-id="<%= tweet.id %>"><img src="img/thumbdown.png" alt="Vote down"></button>
+      <a class="button vote-up" data-tweet-id="<%= tweet.id %>"><img src="img/thumbup.png" alt="Vote up"></a>
+      <a class="button vote-down" data-tweet-id="<%= tweet.id %>"><img src="img/thumbdown.png" alt="Vote down"></a>
     </div>
 
     <time datetime="<%= tweet.created_at %>" pubdate class="created-at">
