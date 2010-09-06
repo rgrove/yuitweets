@@ -3,13 +3,49 @@
 <head>
   <meta charset="utf-8">
   <title>YUI Tweets</title>
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.2.0pr2/build/cssreset/reset-min.css&amp;3.2.0pr2/build/cssgrids/grids-min.css">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.2.0pr2/build/cssgrids/grids-min.css">
   <link rel="stylesheet" type="text/css" href="/css/yuitweets.css?20100906">
-  <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=yui" title="YUI library tweets">
+  <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=yui" title="YUI Library tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=unknown" title="Unknown tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=other" title="Non-YUI tweets">
 </head>
 <body>
+
+<header id="hd">
+  <h1>YUI Tweets</h1>
+
+  <aside id="legend">
+    <table>
+      <caption>Legend</caption>
+      <tr>
+        <th class="legend new" scope="row">New</th>
+        <td>This is a tweet you haven't seen before.</td>
+      </tr>
+
+      <tr>
+        <th class="legend auto" scope="row">Auto</th>
+        <td>
+          This tweet was automatically classified and has not yet been
+          classified by a human.
+        </td>
+      </tr>
+    </table>
+  </aside>
+
+  <p>
+    This is a Bayesian tweet classifier that's gradually learning how to tell
+    the difference between tweets about the YUI Library and tweets about J-pop
+    idols named Yui.
+  </p>
+
+  <p>
+    You can help train it by clicking on the thumbs-up or thumbs-down buttons
+    that appear when you hover over a tweet. You can also subscribe to RSS feeds
+    if you'd like to be notified of new tweets as they come in.
+  </p>
+
+  <a href="http://github.com/rgrove/yuitweets/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+</header>
 
 <div id="bd" class="yui3-g">
   <section class="column yui3-u-1-3">
