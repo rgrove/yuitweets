@@ -265,9 +265,9 @@ function onVoteUp(e) {
 // -- Initialization -----------------------------------------------------------
 requestTweets();
 
-Y.later(60000, null, function () {
-    requestTweets(null, maxId);
-}, null, true);
+// Y.later(60000, null, function () {
+//     requestTweets(null, maxId);
+// }, null, true);
 
 Y.delegate('click', onVoteDown, 'body', '.vote-down');
 Y.delegate('click', onVoteUp, 'body', '.vote-up');
