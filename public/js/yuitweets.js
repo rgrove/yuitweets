@@ -125,8 +125,11 @@ function requestTweets(type, sinceId) {
     }
 
     Y.io(url, {
+        arguments: type,
         on: {
+            end    : onRequestEnd,
             failure: onRequestFailure,
+            start  : onRequestStart,
             success: onRequestSuccess
         },
         timeout: 10000
@@ -207,6 +210,14 @@ function onKeyDown(e) {
     e.preventDefault();
 }
 
+function onRequestEnd(conn, type) {
+    if (type) {
+        Y.one('#' + type).removeClass('loading');
+    } else {
+        Y.all('.tweets').removeClass('loading');
+    }
+}
+
 function onRequestFailure(conn, response) {
     // TODO: handle failures
 }
@@ -216,6 +227,14 @@ function onRequestSuccess(conn, response) {
 
     if (response.data) {
         refreshTweets(response.data);
+    }
+}
+
+function onRequestStart(conn, type) {
+    if (type) {
+        Y.one('#' + type).addClass('loading');
+    } else {
+        Y.all('.tweets').addClass('loading');
     }
 }
 
