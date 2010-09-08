@@ -7,7 +7,7 @@ require 'yuitweets'
 require 'yuitweets/web/helpers'
 
 module YUITweets; class Web < Sinatra::Base
-  set :logging, true
+  set :logging, true if development?
   set :root, ROOT_DIR
 
   get '/' do
