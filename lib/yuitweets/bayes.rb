@@ -94,7 +94,7 @@ module YUITweets; class Bayes
 
     @db.transaction do
       get_word_hash(text).each do |word, count|
-        if word_count(type, word) == 0
+        if @tokens.filter(:type => type, :token => word).count == 0
           @tokens.insert(
             :token => word,
             :type  => type,
@@ -118,7 +118,7 @@ module YUITweets; class Bayes
 
     @db.transaction do
       get_word_hash(text).each do |word, count|
-        trained_count = word_count(type, word)
+        trained_count = @tokens.filter(:type => type, :token => word).count
 
         unless trained_count == 0
           if trained_count - count == 0
