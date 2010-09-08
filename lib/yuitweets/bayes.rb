@@ -45,6 +45,8 @@ module YUITweets; class Bayes
     @db      = db
     @dirty   = true
     @tokens  = db[:tokens]
+
+    refresh_cache
   end
 
   # Attempts to classify the type of the specified _text_. Returns the type name
