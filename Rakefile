@@ -21,6 +21,7 @@ gemspec = Gem::Specification.new do |s|
   s.add_dependency('sequel',        '~> 3.15')
   s.add_dependency('sinatra',       '~> 1.0.0')
   s.add_dependency('sqlite3-ruby',  '~> 1.3.1')
+  s.add_dependency('trollop',       '~> 1.16.2')
   s.add_dependency('unicode_utils', '~> 1.0.0')
   s.add_dependency('yajl-ruby',     '~> 0.7.7')
 
