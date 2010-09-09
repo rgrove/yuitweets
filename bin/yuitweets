@@ -9,7 +9,7 @@ require 'trollop'
 require 'yuitweets'
 
 module YUITweets::CLI
-  TWITTER_URL = 'http://search.twitter.com/search.json?q=yui%20OR%20yuilibrary%20OR%20yui3&lang=en&rpp=100&result_type=recent'
+  TWITTER_URL = 'http://search.twitter.com/search.json?q=yui%20OR%20yuilibrary%20OR%20yui3%20OR%20yuiconf%20OR%20yuiconf2010&lang=en&rpp=100&result_type=recent'
 
   # Attempts to classify unknown tweets.
   def self.classify_tweets
