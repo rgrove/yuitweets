@@ -10,6 +10,7 @@ require 'yuitweets'
 
 module YUITweets::CLI
   TWITTER_URL = 'http://search.twitter.com/search.json?q=yui%20OR%20yuilibrary%20OR%20yui3%20OR%20yuiconf%20OR%20yuiconf2010&lang=en&rpp=100&result_type=recent'
+  USER_AGENT  = "YUITweets/#{YUITweets::VERSION} (+http://github.com/rgrove/yuitweets/)"
 
   # Attempts to classify unknown tweets.
   def self.classify_tweets
@@ -27,26 +28,45 @@ module YUITweets::CLI
 
   # Fetches new tweets.
   def self.fetch_tweets
-    open("#{TWITTER_URL}&since_id=#{YUITweets::Tweet.last_id}") do |search|
-      count  = 0
-      search = Yajl::Parser.parse(search, :symbolize_keys => true)
+    retries = 0
+    url     = "#{TWITTER_URL}&since_id=#{YUITweets::Tweet.last_id}"
 
-      search[:results].each do |tweet|
-        unless YUITweets.db[:tweets].filter(:id => tweet[:id]).count > 0
-          # Discard fields we aren't interested in.
-          tweet.delete(:metadata)
+    puts "--> Fetching new tweets..."
 
-          YUITweets.db[:tweets].insert(
-            :id         => tweet[:id],
-            :tweet      => Yajl::Encoder.encode(tweet),
-            :created_at => Time.parse(tweet[:created_at])
-          )
+    begin
+      open(url, 'User-Agent' => USER_AGENT) do |search|
+        count  = 0
+        search = Yajl::Parser.parse(search, :symbolize_keys => true)
 
-          count += 1
+        search[:results].each do |tweet|
+          unless YUITweets.db[:tweets].filter(:id => tweet[:id]).count > 0
+            # Discard fields we aren't interested in.
+            tweet.delete(:metadata)
+
+            YUITweets.db[:tweets].insert(
+              :id         => tweet[:id],
+              :tweet      => Yajl::Encoder.encode(tweet),
+              :created_at => Time.parse(tweet[:created_at])
+            )
+
+            count += 1
+          end
         end
+
+        puts "Added #{count} new tweet(s)"
       end
 
-      puts "Added #{count} new tweet(s)"
+    rescue OpenURI::HTTPError => ex
+      # Twitter will return a 403 error if the since_id is too old, so we'll
+      # retry once without it.
+      if retries == 0
+        puts "--> HTTP error; retrying one time..."
+        retries += 1
+        url = TWITTER_URL
+        retry
+      end
+
+      raise ex
     end
   end
 
