@@ -6,8 +6,8 @@ Sequel.migration do
   up do
     unless table_exists?(:tokens)
       create_table :tokens do
-        varchar :token, :null => false, :size => 255
-        varchar :type,  :null => false, :size => 255
+        varchar :token, :null => false, :size => 200
+        varchar :type,  :null => false, :size => 100
         bigint  :count, :null => false, :default => 0
 
         primary_key [:type, :token]
