@@ -18,18 +18,13 @@ module YUITweets
     attr_reader :bayes, :db, :queue
 
     def init
-      # load File.join(CONF_DIR, 'config.rb')
+      load File.join(CONF_DIR, 'config.rb')
       load File.join(CONF_DIR, 'stopwords.rb')
 
-      @db    = Sequel.sqlite(File.join(DB_DIR, "#{RACK_ENV}.db"))
+      @db    = Sequel.connect(CONFIG[:database][:uri], :encoding => 'utf8')
       @bayes = Bayes.new(@db)
 
       require 'yuitweets/tweet'
     end
-
-    # def init_server
-    #   require 'yuitweets/queue'
-    #   @queue = MessageQueue.new
-    # end
   end
 end

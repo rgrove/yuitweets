@@ -70,6 +70,48 @@ module YUITweets::CLI
     end
   end
 
+  def self.import(uri)
+    db     = YUITweets.db
+    source = Sequel.connect(uri, :charset => 'utf8')
+
+    token_count = 0
+    tweet_count = 0
+
+    db.transaction do
+      puts "--> Importing tokens..."
+
+      source[:tokens].each do |row|
+        next if db[:tokens].filter(:type => row[:type], :token => row[:token]).count > 0
+
+        db[:tokens].insert(
+          :token => row[:token],
+          :type  => row[:type],
+          :count => row[:count]
+        )
+
+        token_count += 1
+      end
+
+      puts "--> Importing tweets..."
+
+      source[:tweets].each do |row|
+        next if db[:tweets].filter(:id => row[:id]).count > 0
+
+        db[:tweets].insert(
+          :id         => row[:id],
+          :tweet      => row[:tweet],
+          :created_at => row[:created_at],
+          :type       => row[:type],
+          :votes      => row[:votes]
+        )
+
+        tweet_count += 1
+      end
+    end
+
+    puts "Imported #{token_count} token(s) and #{tweet_count} tweet(s)."
+  end
+
   def self.tidy
     db = YUITweets.db
 
@@ -104,14 +146,18 @@ Usage:
 Options:
 EOS
 
-    opt :fix, "Fix votes."
-    opt :tidy, "Tidies up the database.", :short => '-t'
+    opt :import, "Import from another database at the specified URI.", :short => '-i', :type => String
+    opt :tidy,   "Tidy up the database.", :short => '-t'
   end
 
   YUITweets.init
 
-  if options[:tidy_given]
+  if options[:import_given]
+    import(options[:import])
+
+  elsif options[:tidy_given]
     tidy
+
   else
     fetch_tweets
     classify_tweets
