@@ -74,13 +74,22 @@ module YUITweets; class Bayes
     words  = get_words(text)
 
     @metrics.each do |type, metrics|
-      # Create an array of [word, probability] tuples for each word in the text
-      # that has an associated probability in the corpus.
-      type_words = words.map do |word|
-        [word, metrics[word] || SCORE_DEFAULT]
-      end
+      catch :whitelisted do
+        if whitelist = YUITweets::CONFIG[:whitelist][type.to_sym]
+          if words.any?{|word| whitelist.include?(word.downcase) }
+            scores[type] = 0.999
+            throw :whitelisted
+          end
+        end
 
-      scores[type] = robinson(type_words) unless type_words.empty?
+        # Create an array of [word, probability] tuples for each word in the text
+        # that has an associated probability in the corpus.
+        type_words = words.map do |word|
+          [word, metrics[word] || SCORE_DEFAULT]
+        end
+
+        scores[type] = robinson(type_words) unless type_words.empty?
+      end
     end
 
     scores

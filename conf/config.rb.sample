@@ -4,6 +4,46 @@ module YUITweets
     :database => {
       :uri => 'mysql2://yuitweets:fakepass@localhost/tweets'
     }
+
+    :whitelist => {
+      :yui => Set.new(%w[
+        #yuiconf
+        #yuiconf2010
+        @admo
+        @allenr
+        @bartt
+        @caridy
+        @derek
+        @dezziness
+        @drdrace
+        @eduardolundgren
+        @foxxtrot
+        @franksvalli
+        @g13n
+        @ginader
+        @goonieiam
+        @jshirley
+        @ls_n
+        @miraglia
+        @msweeney
+        @natekoechley
+        @reid
+        @rhyolight
+        @slicknet
+        @standardpixel
+        @tilomitra
+        @tivac
+        @yaypie
+        @yuilibrary
+      ]),
+
+      :other => Set.new(%w[
+        #lastfm
+        #nowplaying
+        @ilyxebby
+        @yuimelodies
+      ])
+    }
   }
 
 end
