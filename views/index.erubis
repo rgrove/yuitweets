@@ -77,5 +77,6 @@
 <script src="/js/node-sorted.js"></script>
 <script src="/js/yuitweets.js?20100913"></script>
 
+<!-- YUITweets v<%== YUITweets::VERSION %> -->
 </body>
 </html>
