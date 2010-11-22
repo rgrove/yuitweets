@@ -1,4 +1,4 @@
-<article id="tweet-<%= tweet.id %>" class="tweet" data-tweet-id="<%= tweet.id %>">
+<article id="tweet-<%= tweet.id_str %>" class="tweet" data-tweet-id="<%= tweet.id_str %>">
   <header>
     <a href="<%= url_user(tweet.from_user) %>" class="photo-link">
       <img src="<%= tweet.profile_image_url %>" alt="<%= tweet.from_user %>" class="photo">
@@ -14,8 +14,8 @@
 
   <footer>
     <div class="vote">
-      <a class="button vote-up" data-tweet-id="<%= tweet.id %>"><img src="img/thumbup.png" alt="Vote up"></a>
-      <a class="button vote-down" data-tweet-id="<%= tweet.id %>"><img src="img/thumbdown.png" alt="Vote down"></a>
+      <a class="button vote-up" data-tweet-id="<%= tweet.id_str %>"><img src="img/thumbup.png" alt="Vote up"></a>
+      <a class="button vote-down" data-tweet-id="<%= tweet.id_str %>"><img src="img/thumbdown.png" alt="Vote down"></a>
     </div>
 
     <time datetime="<%= tweet.created_at %>" pubdate class="created-at">

@@ -27,9 +27,9 @@ module YUITweets; class Web < Sinatra::Base
       })
     else
       json_success({
-        :add      => results.map {|t| t.to_hash(:html => render_tweet(t)) },
+        :add      => results.map {|t| t.tweet.merge({'html' => render_tweet(t)}) },
         :limit    => @limit,
-        :max_id   => results.first && results.first.id || 0,
+        :max_id   => results.first && results.first.id_str || '0',
         :since_id => @since_id
       })
     end
@@ -77,7 +77,7 @@ module YUITweets; class Web < Sinatra::Base
     type  = params[:type] or json_error(400, "Missing required parameter: type")
     type.downcase!
 
-    tweet = Tweet[id.to_i] or json_error(400, "Tweet id not found: #{id.to_i}")
+    tweet = Tweet[id] or json_error(400, "Tweet id not found: #{id}")
 
     # Don't retrain if the tweet has already been trained as this type.
     if tweet.type != type
@@ -90,13 +90,13 @@ module YUITweets; class Web < Sinatra::Base
       YUITweets.bayes.train(type, tweet.specimen)
     end
 
-    tweet.update(
-      :type  => type,
-      :votes => tweet.votes + 1
-    )
+    tweet.update({
+      '$set' => {'type' => type},
+      '$inc' => {'votes' => 1}
+    })
 
     json_success({
-      :update => [tweet.to_hash(:html => render_tweet(tweet))]
+      :update => [tweet.tweet.merge({'html' => render_tweet(tweet)})]
     })
   end
 end; end

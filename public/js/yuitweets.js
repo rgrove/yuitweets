@@ -146,10 +146,10 @@ function tweetNodeComparator(a, b) {
 function updateTweets(tweets) {
     YArray.each(tweets, function (newTweet) {
         var oldTweet,
-            tweetNode = Y.one('#tweet-' + newTweet.id);
+            tweetNode = Y.one('#tweet-' + newTweet.id_str);
 
         if (!tweetNode) {
-            Y.error('Tweet node not found: ' + newTweet.id);
+            Y.error('Tweet node not found: ' + newTweet.id_str);
             return;
         }
 

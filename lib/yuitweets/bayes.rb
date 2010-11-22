@@ -44,7 +44,7 @@ module YUITweets; class Bayes
     @metrics = {}
     @db      = db
     @dirty   = true
-    @tokens  = db[:tokens]
+    @tokens  = db['tokens']
 
     refresh_cache
   end
@@ -101,20 +101,12 @@ module YUITweets; class Bayes
     type = type.to_s
     raise ArgumentError, "No type specified" if type.empty?
 
-    @db.transaction do
-      get_word_hash(text).each do |word, count|
-        if @tokens.filter(:type => type, :token => word).count == 0
-          @tokens.insert(
-            :token => word,
-            :type  => type,
-            :count => count
-          )
-        else
-          @tokens.filter(:type => type, :token => word).update(
-            :count => :count + count
-          )
-        end
-      end
+    get_word_hash(text).each do |word, count|
+      @tokens.update(
+        {'type' => type, 'token' => word},
+        {'$inc' => {'count' => count}},
+        {:upsert => true}
+      )
     end
 
     @dirty = true
@@ -125,20 +117,19 @@ module YUITweets; class Bayes
   def untrain(type, text)
     type = type.to_s
 
-    @db.transaction do
-      get_word_hash(text).each do |word, count|
-        trained_count = @tokens.filter(:type => type, :token => word).count
+    get_word_hash(text).each do |word, count|
+      # Remove the token if untraining would result in a count of <= 0.
+      @tokens.remove({
+        'type'  => type,
+        'token' => word,
+        'count' => {'$lte' => count},
+      })
 
-        unless trained_count == 0
-          if trained_count - count == 0
-            @tokens.filter(:type => type, :token => word).delete
-          else
-            @tokens.filter(:type => type, :token => word).update(
-              :count => :count - count
-            )
-          end
-        end
-      end
+      # Update the token if untraining would result in a count of > 0.
+      @tokens.update(
+        {'type' => type, 'token' => word},
+        {'$inc' => {'count' => -count}}
+      )
     end
 
     @dirty = true
@@ -148,6 +139,7 @@ module YUITweets; class Bayes
 
   def get_words(string)
     stopwords = YUITweets::Config::STOPWORDS
+    string    = string.dup
     words     = []
 
     # Extract URLs from the string. Each URL will be treated as a single word.
@@ -188,11 +180,11 @@ module YUITweets; class Bayes
 
     # Cache all token info in memory so we don't have to issue thousands of
     # database queries.
-    @tokens.group(:type).select(:type).all.each do |row|
-      type_cache = @cache[row[:type]] = Hash.new(0)
+    types.each do |type|
+      type_cache = @cache[type] = Hash.new(0)
 
-      @tokens.filter(:type => row[:type]).all.each do |row|
-        type_cache[row[:token]] = row[:count]
+      @tokens.find('type' => type).each do |token|
+        type_cache[token['token']] = token['count']
       end
     end
 
@@ -234,6 +226,11 @@ module YUITweets; class Bayes
     q = 1.0 - words.map{|w| w[1]}.inject{|s, v| s * v} ** n
     s = (p - q) / (p + q)
     (1 + s) / 2
+  end
+
+  # Gets an array of every distinct token type in the database.
+  def types
+    @tokens.group(['type'], {}, {}, 'function () {}').map{|doc| doc['type'] }
   end
 
   def word_count(type = nil, word = nil)

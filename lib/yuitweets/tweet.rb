@@ -1,58 +1,82 @@
 require 'htmlentities'
 require 'time'
-require 'yajl'
 
-module YUITweets; class Tweet < Sequel::Model
+module YUITweets; class Tweet
+  attr_reader :tweet
+
   # Class methods.
-
-  def self.last_id
-    reverse_order(:id).get(:id) || 0
+  def self.[](id)
+    tweet = YUITweets.db['tweets'].find_one({'_id' => id})
+    tweet ? Tweet.new(tweet) : nil
   end
 
-  def self.recent(options = {})
-    options = {
+  def self.last_id
+    tweet = YUITweets.db['tweets'].find_one({}, {
+      :fields => ['_id'],
+      :sort   => ['_id', :desc]
+    })
+
+    tweet ? tweet['_id'] : 0
+  end
+
+  def self.recent(criteria = {}, options = {})
+    YUITweets.db['tweets'].find(criteria, {
       :limit => 20,
-      :type  => nil
-    }.merge(options)
-
-    dataset = filter(:type => options[:type]).limit(options[:limit]).
-        reverse_order(:id)
-
-    if options[:since_id]
-      dataset = dataset.filter('id > ?', options[:since_id])
-    end
-
-    dataset
+      :sort  => ['_id', :desc]
+    }.merge(options)).map{|doc| Tweet.new(doc) }
   end
 
   # Instance methods.
+  def initialize(tweet = {})
+    @cache = {}
+    @tweet = tweet
+  end
 
-  def method_missing(name)
-    tweet[name]
+  def clear_cache
+    @cache = {}
+  end
+
+  def created_at
+    @cache[:created_at] ||= Time.parse(@tweet['created_at'])
+  end
+
+  def method_missing(name, *args, &block)
+    if @tweet.has_key?(name.to_s)
+      @tweet[name.to_s]
+    else
+      super
+    end
+  end
+
+  def respond_to_missing?(name, *)
+    @tweet.has_key(name.to_s) || super
   end
 
   def scores(refresh = false)
-    return @scores unless refresh || @scores.nil?
-    @scores = YUITweets.bayes.score(specimen)
+    @cache[:scores] = nil if refresh
+    @cache[:scores] ||= YUITweets.bayes.score(specimen)
   end
 
   def specimen
-    @specimen ||= HTMLEntities.new.decode("@#{from_user} #{text}")
+    @cache[:specimen] ||= HTMLEntities.new.decode("@#{from_user} #{text}")
   end
 
-  def to_hash(merge = {}, include_scores = false)
-    hash = {
-      :id     => id,
-      :tweet  => tweet,
-      :type   => type,
-      :votes  => votes
-    }.merge(merge)
-
-    hash[:scores] = scores if include_scores
-    hash
+  def type
+    @tweet['type'] || nil
   end
 
-  def tweet
-    @tweet ||= Yajl::Parser.parse(self[:tweet], :symbolize_keys => true)
+  def update(doc, refresh = true)
+    @tweet = YUITweets.db['tweets'].find_and_modify(
+      :query  => {'_id' => @tweet['_id']},
+      :update => doc,
+      :new    => refresh
+    )
+
+    clear_cache if refresh
   end
+
+  def votes
+    @tweet['votes'] || 0
+  end
+
 end; end

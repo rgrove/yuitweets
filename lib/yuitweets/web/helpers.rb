@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'yajl'
 
 module YUITweets; class Web < Sinatra::Base
 
@@ -40,29 +41,28 @@ module YUITweets; class Web < Sinatra::Base
 
     def recent_tweets
       @limit    = (params[:limit] || 20).to_i
-      @since_id = (params[:since_id] || 0).to_i
+      @since_id = (params[:since_id] || '0')
       @type     = params[:type]
 
       if @type.nil?
         results = []
 
         ['yui', nil, 'other'].each do |type|
-          results += Tweet.recent(
-            :limit    => @limit,
-            :since_id => @since_id,
-            :type     => type
-          ).all
+          results += Tweet.recent({
+            '_id'  => {'$gt' => @since_id},
+            'type' => type
+          }, {:limit => @limit})
         end
+
+        results.sort_by! {|tweet| tweet.id_str }
+        results.reverse!
       else
-        results = Tweet.recent(
-          :limit    => @limit,
-          :since_id => @since_id,
-          :type     => @type == 'unknown' ? nil : @type
-        ).all
+        results = Tweet.recent({
+          '_id'  => {'$gt' => @since_id},
+          'type' => @type == 'unknown' ? nil : @type
+        }, {:limit => @limit})
       end
 
-      results.sort_by! {|tweet| tweet.id }
-      results.reverse!
       results
     end
 
@@ -112,7 +112,7 @@ module YUITweets; class Web < Sinatra::Base
     end
 
     def url_tweet(tweet)
-      "#{url_user(tweet.from_user)}/status/#{tweet.id}"
+      "#{url_user(tweet.from_user)}/status/#{tweet.id_str}"
     end
 
     def url_user(user)

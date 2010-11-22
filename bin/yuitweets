@@ -5,6 +5,7 @@
 
 require 'open-uri'
 require 'trollop'
+require 'yajl'
 
 require 'yuitweets'
 
@@ -16,9 +17,9 @@ module YUITweets::CLI
   def self.classify_tweets
     count = 0
 
-    YUITweets::Tweet.recent(:type => nil, :limit => 100).all.each do |tweet|
+    YUITweets::Tweet.recent({'type' => nil}, {:limit => 200}).each do |tweet|
       if type = YUITweets.bayes.classify(tweet.specimen)
-        tweet.update(:type => type)
+        tweet.update({'$set' => {'type' => type}}, false)
         count += 1
       end
     end
@@ -34,23 +35,19 @@ module YUITweets::CLI
     puts "--> Fetching new tweets..."
 
     begin
+      tweets = YUITweets.db['tweets']
+
       open(url, 'User-Agent' => USER_AGENT) do |search|
         count  = 0
-        search = Yajl::Parser.parse(search, :symbolize_keys => true)
+        search = Yajl::Parser.parse(search)
 
-        search[:results].each do |tweet|
-          unless YUITweets.db[:tweets].filter(:id => tweet[:id]).count > 0
-            # Discard fields we aren't interested in.
-            tweet.delete(:metadata)
-
-            YUITweets.db[:tweets].insert(
-              :id         => tweet[:id],
-              :tweet      => Yajl::Encoder.encode(tweet),
-              :created_at => Time.parse(tweet[:created_at])
-            )
-
-            count += 1
-          end
+        search['results'].each do |tweet|
+          # Dumb insert; doesn't check to see if the tweet already exists, but
+          # nothing bad will happen if it does (the insert will just fail
+          # quietly since we're not checking for an error).
+          tweet['_id'] = tweet['id_str']
+          tweets.insert(tweet)
+          count += 1
         end
 
         puts "Added #{count} new tweet(s)"
@@ -71,69 +68,64 @@ module YUITweets::CLI
   end
 
   def self.import(uri)
-    db     = YUITweets.db
-    source = Sequel.connect(uri, :charset => 'utf8')
-
-    token_count = 0
-    tweet_count = 0
-
-    db.transaction do
-      puts "--> Importing tokens..."
-
-      source[:tokens].each do |row|
-        next if db[:tokens].filter(:type => row[:type], :token => row[:token]).count > 0
-
-        db[:tokens].insert(
-          :token => row[:token],
-          :type  => row[:type],
-          :count => row[:count]
-        )
-
-        token_count += 1
-      end
-
-      puts "--> Importing tweets..."
-
-      source[:tweets].each do |row|
-        next if db[:tweets].filter(:id => row[:id]).count > 0
-
-        db[:tweets].insert(
-          :id         => row[:id],
-          :tweet      => row[:tweet],
-          :created_at => row[:created_at],
-          :type       => row[:type],
-          :votes      => row[:votes]
-        )
-
-        tweet_count += 1
-      end
-    end
-
-    puts "Imported #{token_count} token(s) and #{tweet_count} tweet(s)."
+    # TODO: convert to mongo
+    # db     = YUITweets.db
+    # source = Sequel.connect(uri, :charset => 'utf8')
+    # 
+    # token_count = 0
+    # tweet_count = 0
+    # 
+    # db.transaction do
+    #   puts "--> Importing tokens..."
+    # 
+    #   source[:tokens].each do |row|
+    #     next if db[:tokens].filter(:type => row[:type], :token => row[:token]).count > 0
+    # 
+    #     db[:tokens].insert(
+    #       :token => row[:token],
+    #       :type  => row[:type],
+    #       :count => row[:count]
+    #     )
+    # 
+    #     token_count += 1
+    #   end
+    # 
+    #   puts "--> Importing tweets..."
+    # 
+    #   source[:tweets].each do |row|
+    #     next if db[:tweets].filter(:id => row[:id]).count > 0
+    # 
+    #     db[:tweets].insert(
+    #       :id         => row[:id],
+    #       :tweet      => row[:tweet],
+    #       :created_at => row[:created_at],
+    #       :type       => row[:type],
+    #       :votes      => row[:votes]
+    #     )
+    # 
+    #     tweet_count += 1
+    #   end
+    # end
+    # 
+    # puts "Imported #{token_count} token(s) and #{tweet_count} tweet(s)."
   end
 
   def self.tidy
-    db = YUITweets.db
-
-    # Delete any tokens in the database that are in the stopwords list. This
-    # keeps things clean even if the list is modified after tokens are added.
-    tokens_deleted = 0
-
-    db.transaction do
-      YUITweets::Config::STOPWORDS.each do |word|
-        tokens_deleted += db[:tokens].filter("LOWER(token) = ?", word).delete
-      end
-    end
-
-    if tokens_deleted > 0
-      puts "--> Deleted #{tokens_deleted} token(s)."
-    end
-
-    # Vacuum SQLite databases to reclaim unused space and defragment the data.
-    if db.is_a?(Sequel::SQLite::Database)
-      db.run('VACUUM')
-      puts "--> Vacuumed and defragmented the database."
-    end
+    # TODO: convert to mongo
+    # tokens = YUITweets.db['tokens']
+    # 
+    # # Delete any tokens in the database that are in the stopwords list. This
+    # # keeps things clean even if the list is modified after tokens are added.
+    # tokens_deleted = 0
+    # 
+    # YUITweets::Config::STOPWORDS.each do |word|
+    #   tokens_deleted += tokens.find({})
+    #   tokens_deleted += db[:tokens].filter("LOWER(token) = ?", word).delete
+    # end
+    # 
+    # if tokens_deleted > 0
+    #   puts "--> Deleted #{tokens_deleted} token(s)."
+    # end
   end
 
   # Parse command-line options.
