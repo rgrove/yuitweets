@@ -1,9 +1,11 @@
 module YUITweets
 
   CONFIG = {
-    :database => {
-      :uri => 'mysql2://yuitweets:fakepass@localhost/tweets'
-    }
+    :mongo => {
+      :uri     => 'mongodb://yuitweets:fakepass@localhost/yuitweets',
+      :db      => 'yuitweets',
+      :options => {}
+    },
 
     :whitelist => {
       :yui => Set.new(%w[
