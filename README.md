@@ -22,7 +22,7 @@ The best way to use YUITweets is via the official public installation at
 corpus, and is quickly getting even better at classifying tweets.
 
 If you'd like to hack on your own instance of YUITweets, you'll need Ruby 1.9.1
-or higher, SQLite 3.7.x, and any Rack-compatible web server. Thin is my
+or higher, MongoDB 1.6.2+, and any Rack-compatible web server. Thin is my
 favorite. If you don't already have Thin installed, run:
 
     gem install thin
@@ -36,9 +36,8 @@ Build and install the gem to pull in necessary dependencies:
 
     rake install
 
-Create a development database:
-
-    rake migrate[sqlite://db/development.db]
+Copy `conf/config.rb.sample` to `conf/config.rb` and edit it to configure your
+MongoDB connection settings.
 
 Now you should be ready to pull in some tweets and run the local server:
 
