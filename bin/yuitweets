@@ -45,7 +45,7 @@ module YUITweets::CLI
           # Dumb insert; doesn't check to see if the tweet already exists, but
           # nothing bad will happen if it does (the insert will just fail
           # quietly since we're not checking for an error).
-          tweet['_id'] = tweet['id_str']
+          tweet['_id'] = tweet['id']
           tweets.insert(tweet)
           count += 1
         end
@@ -65,49 +65,6 @@ module YUITweets::CLI
 
       raise ex
     end
-  end
-
-  def self.import(uri)
-    # TODO: convert to mongo
-    # db     = YUITweets.db
-    # source = Sequel.connect(uri, :charset => 'utf8')
-    # 
-    # token_count = 0
-    # tweet_count = 0
-    # 
-    # db.transaction do
-    #   puts "--> Importing tokens..."
-    # 
-    #   source[:tokens].each do |row|
-    #     next if db[:tokens].filter(:type => row[:type], :token => row[:token]).count > 0
-    # 
-    #     db[:tokens].insert(
-    #       :token => row[:token],
-    #       :type  => row[:type],
-    #       :count => row[:count]
-    #     )
-    # 
-    #     token_count += 1
-    #   end
-    # 
-    #   puts "--> Importing tweets..."
-    # 
-    #   source[:tweets].each do |row|
-    #     next if db[:tweets].filter(:id => row[:id]).count > 0
-    # 
-    #     db[:tweets].insert(
-    #       :id         => row[:id],
-    #       :tweet      => row[:tweet],
-    #       :created_at => row[:created_at],
-    #       :type       => row[:type],
-    #       :votes      => row[:votes]
-    #     )
-    # 
-    #     tweet_count += 1
-    #   end
-    # end
-    # 
-    # puts "Imported #{token_count} token(s) and #{tweet_count} tweet(s)."
   end
 
   def self.tidy
@@ -138,7 +95,6 @@ Usage:
 Options:
 EOS
 
-    opt :import, "Import from another database at the specified URI.", :short => '-i', :type => String
     opt :tidy,   "Tidy up the database.", :short => '-t'
   end
 

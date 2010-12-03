@@ -1,22 +1,35 @@
 require 'htmlentities'
 require 'time'
 
+# Listen up. We need to have a talk about tweet ids.
+#
+# Tweet ids are big longass 64-bit integers. They make JavaScript crap its
+# pants, but Mongo and Ruby like them just fine.
+#
+# The _id field of each tweet in Mongo is the original tweet id, as an int. The
+# id_str field is this id as a string. When finding, filtering, or sorting
+# tweets in Mongo or Ruby, we use the int. When sending data to JavaScript, we
+# use the string. When a request comes in from JavaScript that contains an id,
+# it will be a string, and we must cast it to an int.
+#
+# Remember this. If you forget it, strange things will happen.
+
 module YUITweets; class Tweet
   attr_reader :tweet
 
   # Class methods.
   def self.[](id)
-    tweet = YUITweets.db['tweets'].find_one({'_id' => id})
+    tweet = YUITweets.db['tweets'].find_one({'_id' => id.to_i})
     tweet ? Tweet.new(tweet) : nil
   end
 
   def self.last_id
     tweet = YUITweets.db['tweets'].find_one({}, {
-      :fields => ['_id'],
+      :fields => ['id_str'],
       :sort   => ['_id', :desc]
     })
 
-    tweet ? tweet['_id'] : 0
+    tweet ? tweet['id_str'] : '0'
   end
 
   def self.recent(criteria = {}, options = {})

@@ -49,7 +49,7 @@ module YUITweets; class Web < Sinatra::Base
 
         ['yui', nil, 'other'].each do |type|
           results += Tweet.recent({
-            '_id'  => {'$gt' => @since_id},
+            '_id'  => {'$gt' => @since_id.to_i},
             'type' => type
           }, {:limit => @limit})
         end
@@ -58,7 +58,7 @@ module YUITweets; class Web < Sinatra::Base
         results.reverse!
       else
         results = Tweet.recent({
-          '_id'  => {'$gt' => @since_id},
+          '_id'  => {'$gt' => @since_id.to_i},
           'type' => @type == 'unknown' ? nil : @type
         }, {:limit => @limit})
       end
