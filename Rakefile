@@ -17,16 +17,15 @@ gemspec = Gem::Specification.new do |s|
   s.add_dependency('builder',       '~> 2.1.2')
   s.add_dependency('erubis',        '~> 2.6.6')
   s.add_dependency('htmlentities',  '~> 4.2.1')
-  s.add_dependency('mysql2',        '~> 0.2.3')
-  s.add_dependency('sequel',        '~> 3.15')
+  s.add_dependency('mongo',         '~> 1.1.2')
   s.add_dependency('sinatra',       '~> 1.0.0')
-  # s.add_dependency('sqlite3-ruby',  '~> 1.3.1')
   s.add_dependency('trollop',       '~> 1.16.2')
   s.add_dependency('unicode_utils', '~> 1.0.0')
   s.add_dependency('yajl-ruby',     '~> 0.7.7')
 
   # Development dependencies.
   s.add_development_dependency('rake', '~> 0.8.7')
+  s.add_development_dependency('thin', '~> 1.2.7')
 
   # Gem just installs the executable and the library files for now. Pull the
   # rest from git.
@@ -61,17 +60,6 @@ end
 desc 'Build and install the gem.'
 task :install => :gem do
   sh "gem install pkg/yuitweets-#{YUITweets::VERSION}.gem"
-end
-
-desc 'Create or migrate the database schema.'
-task :migrate, :url do |t, args|
-  unless url = args[:url]
-    puts 'Usage  : rake migrate[<db url>]'
-    puts 'Example: rake migrate[sqlite://db/development.db]'
-    abort
-  end
-
-  sh "sequel -m db/migrations #{url}"
 end
 
 desc 'Fetch new tweets.'
