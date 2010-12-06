@@ -10,7 +10,7 @@ body {
 }
 
 a { text-decoration: none; }
-a:hover { text-decoration: underline; }
+.notouch a:hover { text-decoration: underline; }
 
 strong { font-weight: bold; }
 
@@ -64,7 +64,8 @@ strong { font-weight: bold; }
   top: 2px;
 }
 
-.feed:hover { opacity: 1.0; }
+.notouch .feed:hover,
+.touch .feed { opacity: 1.0; }
 
 /* -- Tweets ---------------------------------------------------------------- */
 .tweets { margin: 4px; }
@@ -102,7 +103,7 @@ strong { font-weight: bold; }
   visibility: hidden;
 }
 
-.tweet:hover {
+.notouch .tweet:hover {
   background: #E4F0FC;
   border-color: #9FB8D0;
 }
@@ -136,7 +137,7 @@ strong { font-weight: bold; }
 }
 
 .touch .vote > .button,
-.tweet:hover .vote { visibility: visible; }
+.notouch .tweet:hover .vote { visibility: visible; }
 
 .vote > .button {
   border: 0;
@@ -147,7 +148,8 @@ strong { font-weight: bold; }
   opacity: 0.6;
 }
 
-.vote > .button:hover { opacity: 1.0; }
+.notouch .vote > .button:hover,
+.touch .vote > .button { opacity: 1.0; }
 
 .vote > .button,
 .vote > .button > img {

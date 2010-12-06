@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title>YUI Tweets</title>
   <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.2.0/build/cssgrids/grids-min.css">
-  <link rel="stylesheet" type="text/css" href="/css/yuitweets.css?20100906">
+  <link rel="stylesheet" type="text/css" href="/css/yuitweets.css?20101205">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=yui" title="YUI Library tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=unknown" title="Unknown tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=other" title="Non-YUI tweets">
@@ -75,7 +75,7 @@
 
 <script src="http://yui.yahooapis.com/combo?3.2.0/build/yui/yui-min.js&amp;3.2.0/build/loader/loader-min.js"></script>
 <script src="/js/node-sorted.js"></script>
-<script src="/js/yuitweets.js?20100913"></script>
+<script src="/js/yuitweets.js?20101205"></script>
 
 <!-- YUITweets v<%== YUITweets::VERSION %> -->
 </body>

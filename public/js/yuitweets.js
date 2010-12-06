@@ -269,7 +269,7 @@ requestTweets();
 // and show all voting buttons by default. This isn't perfect, but it's better
 // than nothing.
 if ('ontouchstart' in Y.config.win) {
-    Y.one('body').addClass('touch');
+    Y.one('body').removeClass('notouch').addClass('touch');
 }
 
 Y.later(60000, null, function () {
