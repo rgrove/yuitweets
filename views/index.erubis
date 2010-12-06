@@ -9,7 +9,7 @@
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=unknown" title="Unknown tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=other" title="Non-YUI tweets">
 </head>
-<body>
+<body class="notouch">
 
 <header id="hd">
   <h1>YUI Tweets</h1>
