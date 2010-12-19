@@ -20,13 +20,13 @@ module YUITweets; class Web < Sinatra::Base
 
       # Linkify URLs. Ridonkulous regex courtesy of John Gruber:
       # http://daringfireball.net/2010/07/improved_regex_for_matching_urls
-      text.gsub!(/(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/) do |match|
-        if match =~ /^[a-z]+:\/\//i
-          "<a href=\"#{match}\" rel=\"nofollow\">#{match}</a>"
-        else
-          "<a href=\"http://#{match}\" rel=\"nofollow\">#{match}</a>"
-        end
-      end
+      # text.gsub!(/(?i)\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/) do |match|
+      #   if match =~ /^[a-z]+:\/\//i
+      #     "<a href=\"#{match}\" rel=\"nofollow\">#{match}</a>"
+      #   else
+      #     "<a href=\"http://#{match}\" rel=\"nofollow\">#{match}</a>"
+      #   end
+      # end
 
       # Linkify @mentions.
       text.gsub!(/(?<=^|\W)@(\w{1,16})(?=\W)?/,
