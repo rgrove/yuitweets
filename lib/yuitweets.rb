@@ -27,10 +27,18 @@ module YUITweets
         :options => {}
       }.merge(CONFIG[:mongo])
 
-      @conn = Mongo::Connection.from_uri(conf[:uri], conf[:options])
-      @db   = @conn[conf[:db]]
-
+      @conn  = Mongo::Connection.from_uri(conf[:uri], conf[:options])
+      @db    = @conn[conf[:db]]
       @bayes = Bayes.new(@db)
+
+      # Create indexes (if necessary).
+      @db['tokens'].ensure_index(
+        [['type', Mongo::ASCENDING], ['token', Mongo::ASCENDING]],
+        :unique    => true,
+        :drop_dups => true
+      )
+
+      @db['tweets'].ensure_index([['type', Mongo::ASCENDING]])
 
       require 'yuitweets/tweet'
     end
