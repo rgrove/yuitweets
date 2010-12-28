@@ -3,79 +3,99 @@
 <head>
   <meta charset="utf-8">
   <title>YUI Tweets</title>
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.2.0/build/cssgrids/grids-min.css">
-  <link rel="stylesheet" type="text/css" href="/css/yuitweets.css?20101205">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0pr3/build/cssgrids/grids-min.css">
+  <link rel="stylesheet" type="text/css" href="/css/yuitweets.css?20101227">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=yui" title="YUI Library tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=unknown" title="Unknown tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=other" title="Non-YUI tweets">
 </head>
-<body class="notouch">
+<body class="notouch yui3-skin-sam">
 
 <header id="hd">
   <h1>YUI Tweets</h1>
 
-  <aside id="legend">
-    <table>
-      <caption>Legend</caption>
-      <tr>
-        <th class="legend new" scope="row">New</th>
-        <td>This is a tweet you haven't seen before.</td>
-      </tr>
-
-      <tr>
-        <th class="legend auto" scope="row">Auto</th>
-        <td>
-          This tweet was automatically classified and has not yet been
-          classified by a human.
-        </td>
-      </tr>
-    </table>
-  </aside>
-
   <p>
-    This is a Bayesian tweet classifier that's gradually learning how to tell
-    the difference between tweets about the YUI Library and tweets about J-pop
-    idols named Yui.
+  This is a Bayesian tweet classifier that's gradually learning how to tell
+  the difference between tweets about the YUI Library and tweets about J-pop
+  idols named Yui.
   </p>
 
   <p>
-    You can help train it by clicking on the thumbs-up or thumbs-down buttons
-    that appear when you hover over a tweet. You can also subscribe to RSS feeds
-    if you'd like to be notified of new tweets as they come in.
+  You can help train it by clicking on the thumbs-up or thumbs-down buttons
+  that appear when you hover over a tweet. You can also subscribe to RSS feeds
+  if you'd like to be notified of new tweets as they come in.
   </p>
 
   <a href="http://github.com/rgrove/yuitweets/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 </header>
 
 <div id="bd" class="yui3-g">
-  <section class="column yui3-u-1-3">
-    <h1>
-      YUI Library
-      <a href="/recent.rss?type=yui" rel="alternate" type="application/rss+xml"><img src="img/feed.png" alt="RSS feed" class="feed"></a>
-    </h1>
-    <div id="yui" class="tweets"></div>
-  </section>
+  <div id="main" class="yui3-u-2-3">
+    <div id="tabs">
+      <ul>
+        <li><a href="#yui">YUI Library</a></li>
+        <li><a href="#unknown">Unknown</a></li>
+        <li><a href="#other">Other</a></li>
+      </ul>
 
-  <section class="column yui3-u-1-3">
-    <h1>
-      Unknown
-      <a href="/recent.rss?type=unknown" rel="alternate" type="application/rss+xml"><img src="img/feed.png" alt="RSS feed" class="feed"></a>
-    </h1>
-    <div id="unknown" class="tweets"></div>
-  </section>
+      <div>
+        <section id="yui" class="tweets"></section>
+        <section id="unknown" class="tweets"></section>
+        <section id="other" class="tweets"></section>
+      </div>
+    </div>
+  </div>
 
-  <section class="column yui3-u-1-3">
-    <h1>
-      Not YUI Library
-      <a href="/recent.rss?type=other" rel="alternate" type="application/rss+xml"><img src="img/feed.png" alt="RSS feed" class="feed"></a>
-    </h1>
-    <div id="other" class="tweets"></div>
-  </section>
+  <aside class="yui3-u-1-3">
+    <div id="sidebar">
+      <h1>Legend</h1>
+
+      <table class="legend">
+        <tr>
+          <th class="new" scope="row">New</th>
+          <td>This is a tweet you haven't seen before.</td>
+        </tr>
+
+        <tr>
+          <th class="auto" scope="row">Auto</th>
+          <td>
+            This tweet was automatically classified and has not yet been
+            classified by a human.
+          </td>
+        </tr>
+      </table>
+
+      <h1>Feeds</h1>
+
+      <ul class="feeds">
+        <li>
+          <a href="/recent.rss?type=yui" rel="alternate" type="application/rss+xml">
+            <img src="img/feed.png" alt="RSS icon" class="feed">
+            YUI Library tweets
+          </a>
+        </li>
+
+        <li>
+          <a href="/recent.rss?type=unknown" rel="alternate" type="application/rss+xml">
+            <img src="img/feed.png" alt="RSS feed" class="feed">
+            Unknown tweets
+          </a>
+        </li>
+
+        <li>
+          <a href="/recent.rss?type=other" rel="alternate" type="application/rss+xml">
+            <img src="img/feed.png" alt="RSS feed" class="feed">
+            Other tweets
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
 </div>
 
-<script src="http://yui.yahooapis.com/combo?3.2.0/build/yui/yui-min.js&amp;3.2.0/build/loader/loader-min.js"></script>
+<script src="http://yui.yahooapis.com/combo?3.3.0pr3/build/yui/yui-min.js&amp;3.3.0pr3/build/loader/loader-min.js"></script>
 <script src="/js/node-sorted.js"></script>
-<script src="/js/yuitweets.js?20101205"></script>
+<script src="/js/yuitweets.js?20101227"></script>
 
 <!-- YUITweets v<%== YUITweets::VERSION %> -->
 </body>

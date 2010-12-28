@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{yuitweets}
-  s.version = "20101219"
+  s.version = "20101227"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ryan Grove"]
-  s.date = %q{2010-12-19}
+  s.date = %q{2010-12-27}
   s.default_executable = %q{yuitweets}
   s.email = %q{ryan@wonko.com}
   s.executables = ["yuitweets"]
@@ -22,22 +22,22 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<builder>, ["~> 2.1.2"])
+      s.add_runtime_dependency(%q<builder>, ["~> 3.0.0"])
       s.add_runtime_dependency(%q<erubis>, ["~> 2.6.6"])
       s.add_runtime_dependency(%q<htmlentities>, ["~> 4.2.1"])
-      s.add_runtime_dependency(%q<mongo>, ["~> 1.1.2"])
-      s.add_runtime_dependency(%q<sinatra>, ["~> 1.0.0"])
+      s.add_runtime_dependency(%q<mongo>, ["~> 1.1.5"])
+      s.add_runtime_dependency(%q<sinatra>, ["~> 1.1.2"])
       s.add_runtime_dependency(%q<trollop>, ["~> 1.16.2"])
       s.add_runtime_dependency(%q<unicode_utils>, ["~> 1.0.0"])
       s.add_runtime_dependency(%q<yajl-ruby>, ["~> 0.7.7"])
       s.add_development_dependency(%q<rake>, ["~> 0.8.7"])
       s.add_development_dependency(%q<thin>, ["~> 1.2.7"])
     else
-      s.add_dependency(%q<builder>, ["~> 2.1.2"])
+      s.add_dependency(%q<builder>, ["~> 3.0.0"])
       s.add_dependency(%q<erubis>, ["~> 2.6.6"])
       s.add_dependency(%q<htmlentities>, ["~> 4.2.1"])
-      s.add_dependency(%q<mongo>, ["~> 1.1.2"])
-      s.add_dependency(%q<sinatra>, ["~> 1.0.0"])
+      s.add_dependency(%q<mongo>, ["~> 1.1.5"])
+      s.add_dependency(%q<sinatra>, ["~> 1.1.2"])
       s.add_dependency(%q<trollop>, ["~> 1.16.2"])
       s.add_dependency(%q<unicode_utils>, ["~> 1.0.0"])
       s.add_dependency(%q<yajl-ruby>, ["~> 0.7.7"])
@@ -45,11 +45,11 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<thin>, ["~> 1.2.7"])
     end
   else
-    s.add_dependency(%q<builder>, ["~> 2.1.2"])
+    s.add_dependency(%q<builder>, ["~> 3.0.0"])
     s.add_dependency(%q<erubis>, ["~> 2.6.6"])
     s.add_dependency(%q<htmlentities>, ["~> 4.2.1"])
-    s.add_dependency(%q<mongo>, ["~> 1.1.2"])
-    s.add_dependency(%q<sinatra>, ["~> 1.0.0"])
+    s.add_dependency(%q<mongo>, ["~> 1.1.5"])
+    s.add_dependency(%q<sinatra>, ["~> 1.1.2"])
     s.add_dependency(%q<trollop>, ["~> 1.16.2"])
     s.add_dependency(%q<unicode_utils>, ["~> 1.0.0"])
     s.add_dependency(%q<yajl-ruby>, ["~> 0.7.7"])

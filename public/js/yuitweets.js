@@ -1,4 +1,9 @@
-var Y = YUI().use('cookie', 'event-key', 'io-base', 'json-parse', 'node', 'node-sorted', function (Y) {
+var Y = YUI().use(
+
+  'cookie', 'event-key', 'io-base', 'json-parse', 'node', 'node-sorted',
+  'tabview',
+
+function (Y) {
 
 var YArray = Y.Array,
 
@@ -13,7 +18,9 @@ var YArray = Y.Array,
     nodeUnknown = Y.one('#unknown'),
     nodeYUI     = Y.one('#yui'),
 
-    showScores  = window.location.search.search(/[?&]show_scores(?:[=&]|$)/) !== -1;
+    showScores  = window.location.search.search(/[?&]show_scores(?:[=&]|$)/) !== -1,
+
+    tabView;
 
 // -- Private Functions --------------------------------------------------------
 function addTweet(tweet, prepend) {
@@ -198,11 +205,11 @@ function onKeyDown(e) {
     firstUnknown = firstUnknown.getAttribute('data-tweet-id');
 
     switch (e.keyCode) {
-    case 37: // left arrow
+    case 38: // up arrow
         vote(firstUnknown, 'yui');
         break;
 
-    case 39: // right arrow
+    case 40: // down arrow
         vote(firstUnknown, 'other');
         break;
     }
@@ -276,11 +283,16 @@ Y.later(60000, null, function () {
     requestTweets(null, maxId);
 }, null, true);
 
-Y.delegate('click', onVoteDown, 'body', '.vote-down');
-Y.delegate('click', onVoteUp, 'body', '.vote-up');
-Y.on('key', onKeyDown, Y.config.doc, 'down:37,39+shift');
+Y.delegate('click', onVoteDown, '#tabs', '.vote-down');
+Y.delegate('click', onVoteUp, '#tabs', '.vote-up');
+Y.on('key', onKeyDown, Y.config.doc, 'down:38,40+shift');
 
 nodeOther.plug(Y.Plugin.Sorted, {comparator: tweetNodeComparator});
 nodeYUI.plug(Y.Plugin.Sorted, {comparator: tweetNodeComparator});
+
+tabView = new Y.TabView({
+    render : true,
+    srcNode: '#tabs'
+});
 
 });
