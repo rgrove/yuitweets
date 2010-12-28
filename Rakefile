@@ -14,11 +14,11 @@ gemspec = Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.1'
 
   # Runtime dependencies.
-  s.add_dependency('builder',       '~> 2.1.2')
+  s.add_dependency('builder',       '~> 3.0.0')
   s.add_dependency('erubis',        '~> 2.6.6')
   s.add_dependency('htmlentities',  '~> 4.2.1')
-  s.add_dependency('mongo',         '~> 1.1.2')
-  s.add_dependency('sinatra',       '~> 1.0.0')
+  s.add_dependency('mongo',         '~> 1.1.5')
+  s.add_dependency('sinatra',       '~> 1.1.2')
   s.add_dependency('trollop',       '~> 1.16.2')
   s.add_dependency('unicode_utils', '~> 1.0.0')
   s.add_dependency('yajl-ruby',     '~> 0.7.7')
