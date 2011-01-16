@@ -14,12 +14,13 @@ var YArray = Y.Array,
 
     maxId = 0,
 
-    nodeOther   = Y.one('#other'),
-    nodeUnknown = Y.one('#unknown'),
-    nodeYUI     = Y.one('#yui'),
+    nodeOther    = Y.one('#other'),
+    nodeUnknown  = Y.one('#unknown'),
+    nodeYUI      = Y.one('#yui'),
 
-    showScores  = window.location.search.search(/[?&]show_scores(?:[=&]|$)/) !== -1,
+    showScores   = window.location.search.search(/[?&]show_scores(?:[=&]|$)/) !== -1,
 
+    touchEnabled = ('ontouchstart' in Y.config.win),
     tabView;
 
 // -- Private Functions --------------------------------------------------------
@@ -275,7 +276,7 @@ requestTweets();
 // If the browser has a touchstart event, we'll turn off the hover requirement
 // and show all voting buttons by default. This isn't perfect, but it's better
 // than nothing.
-if ('ontouchstart' in Y.config.win) {
+if (touchEnabled) {
     Y.one('body').removeClass('notouch').addClass('touch');
 }
 
@@ -283,8 +284,8 @@ Y.later(60000, null, function () {
     requestTweets(null, maxId);
 }, null, true);
 
-Y.delegate('click', onVoteDown, '#tabs', '.vote-down');
-Y.delegate('click', onVoteUp, '#tabs', '.vote-up');
+Y.delegate(touchEnabled ? 'touchstart' : 'click', onVoteDown, '#tabs', '.vote-down');
+Y.delegate(touchEnabled ? 'touchstart' : 'click', onVoteUp, '#tabs', '.vote-up');
 Y.on('key', onKeyDown, Y.config.doc, 'down:38,40+shift');
 
 nodeOther.plug(Y.Plugin.Sorted, {comparator: tweetNodeComparator});

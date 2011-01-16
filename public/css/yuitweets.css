@@ -7,7 +7,12 @@ html {
 
 body {
   margin: auto;
-  padding: 1em 1em 4em;
+  max-width: 800px;
+  padding: 7px 7px 16px;
+}
+
+@media all and (min-width: 500px) {
+  body { padding: 1em 1em 4em; }
 }
 
 a { text-decoration: none; }
@@ -16,12 +21,17 @@ a { text-decoration: none; }
 strong { font-weight: bold; }
 
 /* -- Header ---------------------------------------------------------------- */
-#hd { padding-right: 100px; }
-
 #hd h1 {
   font-family: 'Gill Sans', Verdana, sans-serif;
   font-size: 24px;
   margin: 0 0 0.5em;
+}
+
+.forkme { display: none; }
+
+@media all and (min-width: 500px) {
+  #hd { padding-right: 100px; }
+  .forkme { display: inline; }
 }
 
 /* -- Body ------------------------------------------------------------------ */
@@ -31,11 +41,18 @@ strong { font-weight: bold; }
 }
 
 /* -- Sidebar --------------------------------------------------------------- */
-#sidebar { padding: 0 0.5em 0 1.2em; }
+#sidebar {
+  display: none;
+  padding: 0 0.5em 0 1.2em;
+}
 
 #sidebar h1 {
   font-size: 14px;
   margin-top: 1.5em;
+}
+
+@media all and (min-width: 500px) {
+  #sidebar { display: block; }
 }
 
 .feeds {
@@ -71,7 +88,9 @@ strong { font-weight: bold; }
 }
 
 /* -- Tweets ---------------------------------------------------------------- */
-.tweets { margin: 4px; }
+@media all and (min-width: 500px) {
+  .tweets { margin: 4px; }
+}
 
 .tweets.loading {
   background: #fff url('../img/loading.gif') no-repeat center 30px;
@@ -80,10 +99,15 @@ strong { font-weight: bold; }
 
 .tweet {
   border: 1px solid transparent;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   overflow: hidden;
   padding: 4px 29px 4px 4px;
   position: relative;
+}
+
+.touch .tweet {
+  margin-bottom: 7px;
+  min-height: 66px;
 }
 
 .legend th.new,
@@ -112,7 +136,9 @@ strong { font-weight: bold; }
 }
 
 .tweet .bd,
-.tweet > footer { margin-left: 57px; }
+.tweet > footer {
+  margin: 0 12px 0 57px;
+}
 
 .tweet > footer {
   color: #999;
@@ -139,15 +165,12 @@ strong { font-weight: bold; }
   z-index: 1;
 }
 
-.touch .vote > .button,
-.notouch .tweet:hover .vote { visibility: visible; }
-
 .vote > .button {
   border: 0;
   background: none;
   cursor: pointer;
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   opacity: 0.6;
 }
 
@@ -158,6 +181,15 @@ strong { font-weight: bold; }
 .vote > .button > img {
   height: 24px;
   width: 24px;
+}
+
+.touch .vote > .button,
+.notouch .tweet:hover .vote { visibility: visible; }
+
+.touch .vote > .button,
+.touch .vote > .button img {
+  height: 32px;
+  width: 32px;
 }
 
 #yui .vote-up,

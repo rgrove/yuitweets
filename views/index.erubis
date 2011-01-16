@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
   <title>YUI Tweets</title>
-  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0pr3/build/cssgrids/grids-min.css">
-  <link rel="stylesheet" type="text/css" href="/css/yuitweets.css?20101227">
+  <link rel="stylesheet" type="text/css" media="all and (min-width: 500px)" href="http://yui.yahooapis.com/3.3.0/build/cssgrids/grids-min.css">
+  <link rel="stylesheet" type="text/css" href="/css/yuitweets.css?20110116">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=yui" title="YUI Library tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=unknown" title="Unknown tweets">
   <link rel="alternate" type="application/rss+xml" href="/recent.rss?type=other" title="Non-YUI tweets">
@@ -26,7 +27,7 @@
   if you'd like to be notified of new tweets as they come in.
   </p>
 
-  <a href="http://github.com/rgrove/yuitweets/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+  <a href="http://github.com/rgrove/yuitweets/" class="forkme"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 </header>
 
 <div id="bd" class="yui3-g">
@@ -93,9 +94,9 @@
   </aside>
 </div>
 
-<script src="http://yui.yahooapis.com/combo?3.3.0pr3/build/yui/yui-min.js&amp;3.3.0pr3/build/loader/loader-min.js"></script>
+<script src="http://yui.yahooapis.com/combo?3.3.0/build/yui/yui-min.js&amp;3.3.0/build/loader/loader-min.js"></script>
 <script src="/js/node-sorted.js"></script>
-<script src="/js/yuitweets.js?20101227"></script>
+<script src="/js/yuitweets.js?20110116"></script>
 
 <!-- YUITweets v<%== YUITweets::VERSION %> -->
 </body>
