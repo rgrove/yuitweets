@@ -9,6 +9,8 @@ module YUITweets
 
     :relay_tweets => false,
 
+    :ignore_users => Set.new(%w[yuirelay]),
+
     :whitelist => {
       :yui => Set.new(%w[
         #yuiconf
