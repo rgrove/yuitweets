@@ -3,6 +3,7 @@
 # This is currently just a stupid executable that grabs the latest unseen
 # Twitter search results for [yui] and shoves them into the YUITweets database.
 
+require 'oauth'
 require 'open-uri'
 require 'trollop'
 require 'yajl'
@@ -15,16 +16,32 @@ module YUITweets::CLI
 
   # Attempts to classify unknown tweets.
   def self.classify_tweets
-    count = 0
+    classify_count = 0
+    to_relay       = []
+
+    puts "Classifying tweets..."
 
     YUITweets::Tweet.recent({'type' => nil}, {:limit => 200}).each do |tweet|
       if type = YUITweets.bayes.classify(tweet.specimen)
+        to_relay << tweet if type == :yui
         tweet.update({'$set' => {'type' => type}}, false)
-        count += 1
+        classify_count += 1
       end
     end
 
-    puts "Classified #{count} tweet(s)"
+    puts "--> Classified #{classify_count} tweet(s)"
+
+    if !to_relay.empty? && YUITweets::CONFIG[:relay_tweets]
+      puts "Relaying tweets..."
+
+      relay_count = 0
+
+      to_relay.each do |tweet|
+        relay_count += 1 if self.retweet(tweet.id_str)
+      end
+
+      puts "--> Relayed #{relay_count} tweet(s)"
+    end
   end
 
   # Fetches new tweets.
@@ -32,7 +49,7 @@ module YUITweets::CLI
     retries = 0
     url     = "#{TWITTER_URL}&since_id=#{YUITweets::Tweet.last_id}"
 
-    puts "--> Fetching new tweets..."
+    puts "Fetching new tweets..."
 
     begin
       tweets = YUITweets.db['tweets']
@@ -50,7 +67,7 @@ module YUITweets::CLI
           count += 1
         end
 
-        puts "Added #{count} new tweet(s)"
+        puts "--> Added #{count} new tweet(s)"
       end
 
     rescue OpenURI::HTTPError => ex
@@ -67,19 +84,47 @@ module YUITweets::CLI
     end
   end
 
+  def self.init_oauth
+    return unless @oauth_access_token.nil? # only init once
+
+    consumer = OAuth::Consumer.new(ENV['YUIRELAY_CONSUMER_KEY'], ENV['YUIRELAY_CONSUMER_SECRET'], {
+      :site   => 'http://api.twitter.com/1',
+      :scheme => :header
+    })
+
+    @oauth_access_token = OAuth::AccessToken.from_hash(consumer, {
+      :oauth_token        => ENV['YUIRELAY_OAUTH_TOKEN'],
+      :oauth_token_secret => ENV['YUIRELAY_OAUTH_SECRET']
+    })
+  end
+
+  def self.retweet(id)
+    return unless YUITweets::CONFIG[:relay_tweets]
+    self.init_oauth
+
+    response = @oauth_access_token.post("/statuses/retweet/#{id}.json")
+
+    unless response.code[0] == '2'
+      puts "--> Retweet error: #{response.code} #{response.message}"
+      return false
+    end
+
+    true
+  end
+
   def self.tidy
     # TODO: convert to mongo
     # tokens = YUITweets.db['tokens']
-    # 
+    #
     # # Delete any tokens in the database that are in the stopwords list. This
     # # keeps things clean even if the list is modified after tokens are added.
     # tokens_deleted = 0
-    # 
+    #
     # YUITweets::Config::STOPWORDS.each do |word|
     #   tokens_deleted += tokens.find({})
     #   tokens_deleted += db[:tokens].filter("LOWER(token) = ?", word).delete
     # end
-    # 
+    #
     # if tokens_deleted > 0
     #   puts "--> Deleted #{tokens_deleted} token(s)."
     # end

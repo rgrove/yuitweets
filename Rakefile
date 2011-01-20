@@ -18,6 +18,7 @@ gemspec = Gem::Specification.new do |s|
   s.add_dependency('erubis',        '~> 2.6.6')
   s.add_dependency('htmlentities',  '~> 4.2.1')
   s.add_dependency('mongo',         '~> 1.1.5')
+  s.add_dependency('oauth',         '~> 0.4.4')
   s.add_dependency('sinatra',       '~> 1.1.2')
   s.add_dependency('trollop',       '~> 1.16.2')
   s.add_dependency('unicode_utils', '~> 1.0.0')

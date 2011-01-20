@@ -7,6 +7,8 @@ module YUITweets
       :options => {}
     },
 
+    :relay_tweets => false,
+
     :whitelist => {
       :yui => Set.new(%w[
         #yuiconf
