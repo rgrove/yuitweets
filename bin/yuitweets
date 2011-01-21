@@ -108,7 +108,7 @@ module YUITweets::CLI
     response = @oauth_access_token.post("/statuses/retweet/#{id}.json")
 
     unless response.code[0] == '2'
-      puts "--> Retweet error: #{response.code} #{response.message}"
+      STDERR.puts "[#{Time.new.to_s}] Retweet error: #{response.code} #{response.message}; tweet id: #{id}"
       return false
     end
 
