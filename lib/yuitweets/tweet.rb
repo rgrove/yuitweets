@@ -65,6 +65,10 @@ module YUITweets; class Tweet
     @tweet.has_key(name.to_s) || super
   end
 
+  def retweet?
+    !!(@tweet['text'] =~ /^RT /)
+  end
+
   def scores(refresh = false)
     @cache[:scores] = nil if refresh
     @cache[:scores] ||= YUITweets.bayes.score(specimen)

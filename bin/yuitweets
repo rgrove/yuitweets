@@ -23,7 +23,7 @@ module YUITweets::CLI
 
     YUITweets::Tweet.recent({'type' => nil}, {:limit => 200}).each do |tweet|
       if type = YUITweets.bayes.classify(tweet.specimen)
-        to_relay << tweet if type == :yui
+        to_relay << tweet if type == :yui && !tweet.retweet?
         tweet.update({'$set' => {'type' => type}}, false)
         classify_count += 1
       end
