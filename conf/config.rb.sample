@@ -11,6 +11,10 @@ module YUITweets
 
     :ignore_users => Set.new(%w[yuirelay]),
 
+    # Ignore tweets containing any of these strings. Mostly spammers again.
+    :ignore_text => Set.new([
+    ]),
+
     :whitelist => {
       :yui => Set.new(%w[
         #yuiconf

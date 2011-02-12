@@ -46,9 +46,10 @@ module YUITweets::CLI
 
   # Fetches new tweets.
   def self.fetch_tweets
-    retries = 0
-    url     = "#{TWITTER_URL}&since_id=#{YUITweets::Tweet.last_id}"
-    ignore  = YUITweets::CONFIG[:ignore_users]
+    retries      = 0
+    url          = "#{TWITTER_URL}&since_id=#{YUITweets::Tweet.last_id}"
+    ignore_users = YUITweets::CONFIG[:ignore_users]
+    ignore_text  = YUITweets::CONFIG[:ignore_text]
 
     puts "Fetching new tweets..."
 
@@ -60,7 +61,10 @@ module YUITweets::CLI
         search = Yajl::Parser.parse(search)
 
         search['results'].each do |tweet|
-          next if ignore.include?(tweet['from_user'])
+          tweet_text = tweet['text'].downcase
+
+          next if ignore_users.include?(tweet['from_user'])
+          next if ignore_text.any? {|text| tweet_text.include?(text) }
 
           # Dumb insert; doesn't check to see if the tweet already exists, but
           # nothing bad will happen if it does (the insert will just fail
