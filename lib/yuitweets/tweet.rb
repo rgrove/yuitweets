@@ -50,7 +50,11 @@ module YUITweets; class Tweet
   end
 
   def created_at
-    @cache[:created_at] ||= Time.parse(@tweet['created_at'])
+    begin
+      @cache[:created_at] ||= Time.parse(@tweet['created_at'])
+    rescue => ex
+      @cache[:created_at] = Time.at(0)
+    end
   end
 
   def method_missing(name, *args, &block)
