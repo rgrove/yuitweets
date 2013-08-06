@@ -9,6 +9,7 @@ gemspec = Gem::Specification.new do |s|
   s.email    = 'ryan@wonko.com'
   s.homepage = 'http://github.com/rgrove/yuitweets/'
   s.platform = Gem::Platform::RUBY
+  s.license  = 'MIT'
 
   s.require_path          = 'lib'
   s.required_ruby_version = '>= 1.9.1'
